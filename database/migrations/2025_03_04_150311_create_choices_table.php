@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
+            $table->integer('post_id')->constrained();
+            $table->string('detail');
             $table->timestamps();
         });
     }

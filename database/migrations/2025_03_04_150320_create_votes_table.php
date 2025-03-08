@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('choice_id')->references('id')->on('choices');
+            $table->string('comment');
             $table->timestamps();
         });
     }

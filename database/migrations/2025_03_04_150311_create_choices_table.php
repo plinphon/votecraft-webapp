@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->integer('post_id')->constrained();
+            $table->foreign('post_id')->references('id')->on('posts');
             $table->string('detail');
             $table->timestamps();
         });

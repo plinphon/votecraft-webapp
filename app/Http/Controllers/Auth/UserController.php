@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class UserController extends Controller
         ]);
         
         $user = User::create([
-            'username' => $validated['name'],
+            'username' => $validated['username'], // Fixed: was using 'name' instead of 'username'
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -83,5 +84,4 @@ class UserController extends Controller
         return redirect('/')
             ->with('success', 'You have been logged out successfully.');
     }
-    
 }

@@ -33,12 +33,14 @@ class PostController extends Controller
             'topic' => 'required|max:255',
             'detail' => 'required',
             'user_id' => 'required|exists:users,id',
+            'choice' => 'required|array|min:2:',
+            'choice.*' => 'required|string|max:255',
         ]);
 
         Post::create($validated);
 
         return redirect()->route('posts.index')
-            ->with('success','Post created successfully.');
+            ->with('success','Poll created successfully.');
     }
 
     /**

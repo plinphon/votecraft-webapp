@@ -3,20 +3,18 @@
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\Auth\UserController;
 
 Route::middleware('guest')->group(function () {
-    Volt::route('login', 'auth.login')
+    Route::get('login', [App\Http\Controllers\Auth\UserController::class, 'showLoginForm'])
         ->name('login');
-
-    Volt::route('register', 'auth.register')
+    
+    Route::post('login', [App\Http\Controllers\Auth\UserController::class, 'login']);
+    
+    Route::get('register', [App\Http\Controllers\Auth\UserController::class, 'showRegistrationForm'])
         ->name('register');
-
-    Volt::route('forgot-password', 'auth.forgot-password')
-        ->name('password.request');
-
-    Volt::route('reset-password/{token}', 'auth.reset-password')
-        ->name('password.reset');
-
+    
+    Route::post('register', [App\Http\Controllers\Auth\UserController::class, 'register']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -31,5 +29,4 @@ Route::middleware('auth')->group(function () {
         ->name('password.confirm');
 });
 
-Route::post('logout', App\Livewire\Actions\Logout::class)
-    ->name('logout');
+Route::post('logout', [App\Http\Controllers\Auth\UserController::class, 'logout']);

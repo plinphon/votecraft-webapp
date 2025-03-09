@@ -4,16 +4,15 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\PostController;
 
+Route::middleware(['auth'])->group(function () {
+    // Home page route to show posts (protected)
+    Route::get('/', [PostController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+    Route::resource('/posts', PostController::class);
+    
+});
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
-Route::resource('posts', PostController::class);
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

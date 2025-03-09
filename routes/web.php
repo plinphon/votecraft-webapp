@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\PostController;
+
 
 Route::get('/', function () {
     return view('welcome');

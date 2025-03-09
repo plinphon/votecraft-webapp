@@ -84,19 +84,4 @@ class UserController extends Controller
             ->with('success', 'You have been logged out successfully.');
     }
     
-    /**
-     * Show forgot password form
-     */
-    public function showForgotPasswordForm()
-    {
-        return view('auth.forgot-password');
-    }
-    
-    /**
-     * Show reset password form
-     */
-    public function showResetPasswordForm($token)
-    {
-        return view('auth.reset-password', ['token' => $token]);
-    }
 }

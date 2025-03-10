@@ -23,14 +23,10 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
         
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            
             return redirect()->intended('dashboard')
                 ->with('success', 'You have been logged in successfully.');
         }
@@ -60,9 +56,9 @@ class UserController extends Controller
         ]);
         
         $user = User::create([
-            'username' => $validated['username'], // Fixed: was using 'name' instead of 'username'
+            'username' => $validated['username'], 
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password_hash' => Hash::make($validated['password']),
         ]);
         
         Auth::login($user);

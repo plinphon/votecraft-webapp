@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Choice;
 
 class PostController extends Controller
 {
@@ -31,13 +32,20 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'topic' => 'required|max:255',
-            'detail' => 'required',
+            'detail' => 'nullable',
             'user_id' => 'required|exists:users,id',
-            'choice' => 'required|array|min:2:',
+            'choice' => 'required|array|min:2',
             'choice.*' => 'required|string|max:255',
         ]);
 
-        Post::create($validated);
+        $post = Post::create($validated);
+
+        foreach ($validated['choice'] as $choiceDetail) {
+            Choice::create([
+                'post_id' => $post->id,
+                'detail' => $choiceDetail,
+            ]);
+        }
 
         return redirect()->route('posts.index')
             ->with('success','Poll created successfully.');
@@ -66,7 +74,7 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'topic' => 'required|max:255',
-            'detail' => 'required',
+            'detail' => 'nullable',
             'user_id' => 'required|exists:users,id',
         ]);
 

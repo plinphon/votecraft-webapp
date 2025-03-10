@@ -33,7 +33,7 @@
                         
                         <div class="form-group mb-3">
                             <label for="detail">Detail</label>
-                            <textarea class="form-control" id="detail" name="detail" rows="5" required>{{ old('detail') }}</textarea>
+                            <textarea class="form-control" id="detail" name="detail" rows="5">{{ old('detail') }}</textarea>
                         </div>
                         
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">

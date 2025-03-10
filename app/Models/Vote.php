@@ -10,9 +10,12 @@ class Vote extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @var string
+     */
+    protected $table = 'votes';
+
+    /**
+     * @var array
      */
     protected $fillable = [
         'user_id',

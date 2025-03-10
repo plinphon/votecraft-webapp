@@ -17,7 +17,7 @@ class VoteController extends Controller
     public function store(Request $request) 
     {
         $validated = $request->validate([
-            'post_id' => 'required|exists:posts,id',
+            'user_id' => 'required|exists:users,id',
             'choice_id' => 'required|exists:choices,id',
             'comment' => 'nullable'
         ]);

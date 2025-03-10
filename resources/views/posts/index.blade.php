@@ -39,11 +39,17 @@
                                     <td>
                                         <a href="{{ route('posts.show', $post) }}" class="btn btn-sm btn-info">View</a>
                                         <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <button class="btn btn-sm btn-success toggle-vote" data-post-id="{{ $post->id }}">Vote</button>
                                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                                         </form>
+                                    </td>
+                                </tr>
+                                <tr id="vote-row-{{ $post->id }}" style="display: none;">
+                                    <td colspan="5">
+                                        @include('components.vote-box', ['post' => $post])
                                     </td>
                                 </tr>
                             @empty
@@ -58,4 +64,17 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle vote form display
+    document.querySelectorAll('.toggle-vote').forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            const voteRow = document.getElementById(`vote-row-${postId}`);
+            voteRow.style.display = voteRow.style.display === 'none' ? 'table-row' : 'none';
+        });
+    });
+});
+</script>
 @endsection

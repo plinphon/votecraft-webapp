@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->password_hash;
     }
+
+    public function choices()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

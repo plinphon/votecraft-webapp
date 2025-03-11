@@ -26,6 +26,9 @@
                         <p class="mt-2">{{ $post->detail }}</p>
                     </div>
                     
+                    <!-- Add voting component here -->
+                    @include('components.vote-box', ['post' => $post])
+                    
                     <div class="d-flex mt-4">
                         <a href="{{ route('posts.edit', $post) }}" class="btn btn-primary me-2">Edit</a>
                         <form action="{{ route('posts.destroy', $post) }}" method="POST">

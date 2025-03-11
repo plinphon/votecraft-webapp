@@ -15,10 +15,10 @@
                                     {{ $choice->detail }}
                                 </label>
                             </div>
-                            <span class="badge bg-secondary">{{ $choice->getPercentage() }}% ({{ $choice->getTotalVotes() }})</span>
+                            <span class="badge bg-secondary">{{ \App\Http\Controllers\VoteController::getPercentage($choice) }}% ({{ \App\Http\Controllers\VoteController::getTotalChoiceVotes($choice) }})</span>
                         </div>
                         <div class="progress mt-1" style="height: 5px;">
-                            <div class="progress-bar" role="progressbar" style="width: {{ $choice->getPercentage() }}%" 
+                            <div class="progress-bar" role="progressbar" style="width: {{ \App\Http\Controllers\VoteController::getPercentage($choice) }}%" 
                                 aria-valuenow="{{ $choice->getPercentage() }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
             </div>
             
             <div class="mt-2 text-muted small">
-                Total votes: {{ $choice->getTotalVotes() }}
+                Total votes: {{ \App\Http\Controllers\VoteController::getTotalVotes($choice) }}
             </div>
             
             <div class="form-group mb-3 mt-3">

@@ -9,10 +9,6 @@ use App\Models\Vote;
 
 class VoteController extends Controller
 {
-    public function create()
-    {
-        return view('votes.create');
-    }
 
     public function store(Request $request) 
     {
@@ -28,5 +24,25 @@ class VoteController extends Controller
             ->with('success','Voted successfully.');
     }
 
+    public static function getTotalVotes(Choice $choice)
+    {
+        return $choice->post ? $choice->post->choices->sum(fn($c) => $c->votes()->count()) : 0;
+    }
+
+    public static function getTotalChoiceVotes(Choice $choice)
+    {
+        return $choice->post ? $choice->votes()->count() : 0;
+    }
+
+    public static function getPercentage(Choice $choice)
+    {
+        $totalVotes = self::getTotalVotes($choice);
     
+        if ($totalVotes === 0) {
+            return 0;
+        }
+    
+        $choiceVotes = $choice->votes()->count();
+        return round(($choiceVotes / $totalVotes) * 100, 2);
+    }
 }

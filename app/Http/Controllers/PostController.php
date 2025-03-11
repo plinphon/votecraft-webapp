@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\VoteController;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Choice;
@@ -54,12 +55,12 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $post = Post::with(['choices', 'user'])->findOrFail($id);
-        return view('posts.show', compact('post'));
-    }
-
+        public function show(string $id)
+        {
+            $post = Post::with(['choices', 'user'])->findOrFail($id);
+            $voteController = new VoteController(); 
+            return view('posts.show', compact('post'))->with('voteController', $voteController);
+        }
     /**
      * Show the form for editing the specified resource.
      */

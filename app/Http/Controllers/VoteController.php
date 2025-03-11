@@ -24,7 +24,7 @@ class VoteController extends Controller
 
         Vote::create($validated);
 
-        return redirect()->route('posts.index')
+        return redirect()->route('home')
             ->with('success','Voted successfully.');
     }
 

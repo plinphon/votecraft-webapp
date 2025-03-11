@@ -7,16 +7,29 @@
             <div class="form-group mb-3">
                 <label>Choose an option:</label>
                 @foreach($post->choices as $choice)
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choice_id" value="{{ $choice->id }}" id="choice_{{ $choice->id }}">
-                        <label class="form-check-label" for="choice_{{ $choice->id }}">
-                            {{ $choice->detail }}
-                        </label>
+                    <div class="form-check mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <input class="form-check-input" type="radio" name="choice_id" value="{{ $choice->id }}" id="choice_{{ $choice->id }}">
+                                <label class="form-check-label" for="choice_{{ $choice->id }}">
+                                    {{ $choice->detail }}
+                                </label>
+                            </div>
+                            <span class="badge bg-secondary">{{ $choice->getPercentage() }}% ({{ $choice->getTotalVotes() }})</span>
+                        </div>
+                        <div class="progress mt-1" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{ $choice->getPercentage() }}%" 
+                                aria-valuenow="{{ $choice->getPercentage() }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
                 @endforeach
             </div>
             
-            <div class="form-group mb-3">
+            <div class="mt-2 text-muted small">
+                Total votes: {{ $choice->getTotalVotes() }}
+            </div>
+            
+            <div class="form-group mb-3 mt-3">
                 <label for="comment">Comment (optional)</label>
                 <textarea class="form-control" id="comment" name="comment" rows="2"></textarea>
             </div>

@@ -47,7 +47,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('home')
             ->with('success','Poll created successfully.');
     }
 
@@ -93,7 +93,7 @@ class PostController extends Controller
             ]);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('home')
             ->with('success', 'Post updated successfully.');
     }
 
@@ -101,10 +101,10 @@ class PostController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Post $post)
-    {
+    { 
         $post->delete();
 
-        return redirect()->route('posts.index')
+        return redirect()->route('home')
             ->with('success', 'Post deleted successfully.');
     }
 }

@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h2>{{ $post->topic }}</h2>
-                        <a href="{{ route('home') }}" class="btn btn-secondary">Back to Posts</a>
+                        <a href="{{ route('home') }}" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
 

@@ -99,7 +99,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Create Poll
                             </button>
-                            <a href="{{ route('posts.index') }}" class="btn btn-secondary ml-2">
+                            <a href="{{ route('home') }}" class="btn btn-secondary ml-2">
                                 Cancel
                             </a>
                         </div>

@@ -39,6 +39,17 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Comments section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3>Comments</h3>
+                </div>
+                
+                <div class="card-body">
+                    @include('components.post-votes', ['post' => $post])
+                </div>
+            </div>
         </div>
     </div>
 </div>

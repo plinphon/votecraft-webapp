@@ -55,12 +55,23 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-        public function show(string $id)
-        {
-            $post = Post::with(['choices', 'user'])->findOrFail($id);
-            $voteController = new VoteController(); 
-            return view('posts.show', compact('post'))->with('voteController', $voteController);
+    public function show(string $id)
+    {
+        $post = Post::with(['choices.votes.user', 'user'])->findOrFail($id);
+        
+        $allVotes = collect();
+        foreach ($post->choices as $choice) {
+            foreach ($choice->votes as $vote) {
+                // Add choice information to each vote
+                $vote->choice = $choice;
+                $allVotes->push($vote);
+            }
         }
+    
+        $votes = $allVotes->sortByDesc('created_at');
+        
+        return view('posts.show', compact('post', 'votes'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -95,7 +106,7 @@ class PostController extends Controller
         }
 
         return redirect()->route('home')
-            ->with('success', 'Post updated successfully.');
+            ->with('success', 'Post edit successfully.');
     }
 
     /**

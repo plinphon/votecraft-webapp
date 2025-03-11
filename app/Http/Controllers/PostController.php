@@ -56,6 +56,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
+        $post = Post::with(['choices', 'user'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
 
@@ -64,6 +65,7 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+        $post = Post::with(['choices', 'user'])->findOrFail($id);
         return view('posts.edit', compact('post'));
     }
 
@@ -76,9 +78,20 @@ class PostController extends Controller
             'topic' => 'required|max:255',
             'detail' => 'nullable',
             'user_id' => 'required|exists:users,id',
+            'choice' => 'required|array|min:2',
+            'choice.*' => 'required|string|max:255',
         ]);
 
         $post->update($validated);
+
+        $post->choices()->delete();
+
+        foreach ($validated['choice'] as $choiceDetail) {
+            Choice::create([
+                'post_id' => $post->id,
+                'detail' => $choiceDetail,
+            ]);
+        }
 
         return redirect()->route('posts.index')
             ->with('success', 'Post updated successfully.');

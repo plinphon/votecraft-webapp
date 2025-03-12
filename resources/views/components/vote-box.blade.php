@@ -19,7 +19,7 @@
                         </div>
                         <div class="progress mt-1" style="height: 5px;">
                             <div class="progress-bar" role="progressbar" style="width: {{ \App\Http\Controllers\VoteController::getPercentage($choice) }}%" 
-                                aria-valuenow="{{ $choice->getPercentage() }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                aria-valuenow="{{ \App\Http\Controllers\VoteController::getPercentage($choice) }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 @endforeach

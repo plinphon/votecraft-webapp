@@ -67,7 +67,6 @@ class PostController extends Controller
                 $allVotes->push($vote);
             }
         }
-    
         $votes = $allVotes->sortByDesc('created_at');
         
         return view('posts.show', compact('post', 'votes'));

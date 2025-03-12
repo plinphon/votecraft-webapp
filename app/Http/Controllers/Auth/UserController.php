@@ -63,7 +63,7 @@ class UserController extends Controller
         
         Auth::login($user);
         
-        return redirect('dashboard')
+        return redirect('home')
             ->with('success', 'Account created successfully.');
     }
     

@@ -85,23 +85,7 @@
                 </div>
             @endforelse
         </div>
-        
-        <!-- Right Sidebar - Stats -->
-        <div class="col-md-3 d-none d-md-block">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h6 class="card-title">Your Stats</h6>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Polls:</span>
-                        <span class="fw-bold">{{ $posts->count() }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span>Total Votes Received:</span>
-                        <span class="fw-bold">{{ $posts->sum(function($post) { return $post->choices->sum(function($choice) { return $choice->votes->count(); }); }) }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 

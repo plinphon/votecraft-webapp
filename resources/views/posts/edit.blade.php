@@ -8,7 +8,7 @@
                 <div class="card-header">Edit Poll</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('posts.update', $post) }}">
+                    <form method="POST" action="{{ route('posts.update', $post) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -45,59 +45,89 @@
                             <div class="form-group mb-3">
                                 <label>Poll Choices</label>
                                 
-                                @forelse ($post->choices as $choice)
-                                    <div class="choice-group mb-2">
+                                @forelse ($post->choices as $index => $choice)
+                                    <div class="choice-group mb-3">
                                         <div class="input-group">
                                             <input 
                                                 type="text" 
                                                 class="form-control" 
-                                                name="choice[]" 
+                                                name="choices[{{$index}}][detail]" 
                                                 placeholder="Enter choice" 
                                                 value="{{ $choice->detail }}"
                                                 required
                                             >
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                name="choices[{{$index}}][image]" 
+                                                accept="image/*"
+                                            >
+                                            @if($choice->image)
+                                                <div class="input-group-text">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="choices[{{$index}}][remove_image]" id="remove_image_{{$index}}">
+                                                        <label class="form-check-label" for="remove_image_{{$index}}">
+                                                            Remove current image
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <button 
                                                 type="button" 
-                                                class="btn btn-danger remove-choice" 
-                                                style="display:none;"
+                                                class="btn btn-danger remove-choice"
                                             >
                                                 Remove
                                             </button>
                                         </div>
+                                        @if($choice->image)
+                                            <div class="mt-2">
+                                                <img src="{{ asset('storage/' . $choice->image) }}" alt="Choice image" class="img-thumbnail" style="max-height: 100px;">
+                                            </div>
+                                        @endif
                                     </div>
                                 @empty
-                                    <div class="choice-group mb-2">
+                                    <div class="choice-group mb-3">
                                         <div class="input-group">
                                             <input 
                                                 type="text" 
                                                 class="form-control" 
-                                                name="choice[]" 
+                                                name="choices[0][detail]" 
                                                 placeholder="Enter choice" 
                                                 required
                                             >
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                name="choices[0][image]" 
+                                                accept="image/*"
+                                            >
                                             <button 
                                                 type="button" 
-                                                class="btn btn-danger remove-choice" 
-                                                style="display:none;"
+                                                class="btn btn-danger remove-choice"
                                             >
                                                 Remove
                                             </button>
                                         </div>
                                     </div>
                                     
-                                    <div class="choice-group mb-2">
+                                    <div class="choice-group mb-3">
                                         <div class="input-group">
                                             <input 
                                                 type="text" 
                                                 class="form-control" 
-                                                name="choice[]" 
+                                                name="choices[1][detail]" 
                                                 placeholder="Enter choice" 
                                                 required
                                             >
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                name="choices[1][image]" 
+                                                accept="image/*"
+                                            >
                                             <button 
                                                 type="button" 
-                                                class="btn btn-danger remove-choice" 
-                                                style="display:none;"
+                                                class="btn btn-danger remove-choice"
                                             >
                                                 Remove
                                             </button>
@@ -119,9 +149,9 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
-                                Edit Poll
+                                Update Poll
                             </button>
-                            <a href="{{ route('home') }}" class="btn btn-secondary ml-2">
+                            <a href="{{ route('home') }}" class="btn btn-secondary ms-2">
                                 Cancel
                             </a>
                         </div>
@@ -136,19 +166,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     const choicesContainer = document.querySelector('#choices-container .form-group');
     const addChoiceButton = document.getElementById('add-choice');
+    
+    // Calculate the next choice index
+    let choiceIndex = document.querySelectorAll('.choice-group').length;
 
     // Add choice functionality
     addChoiceButton.addEventListener('click', function() {
         const newChoiceGroup = document.createElement('div');
-        newChoiceGroup.className = 'choice-group mb-2';
+        newChoiceGroup.className = 'choice-group mb-3';
         newChoiceGroup.innerHTML = `
             <div class="input-group">
                 <input 
                     type="text" 
                     class="form-control" 
-                    name="choice[]" 
+                    name="choices[${choiceIndex}][detail]" 
                     placeholder="Enter choice" 
                     required
+                >
+                <input
+                    type="file"
+                    class="form-control"
+                    name="choices[${choiceIndex}][image]" 
+                    accept="image/*"
                 >
                 <button 
                     type="button" 
@@ -160,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         choicesContainer.appendChild(newChoiceGroup);
+        choiceIndex++;
         updateRemoveButtons();
     });
 

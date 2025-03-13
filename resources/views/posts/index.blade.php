@@ -99,15 +99,36 @@
         border: 1px solid rgba(0,0,0,.125);
     }
     .btn-primary {
-        background-color: #1DA1F2;
-        border-color: #1DA1F2;
+        background-color: #FF8C00;
+        border-color: #FF8C00;
     }
     .btn-primary:hover {
-        background-color: #0d8ecf;
-        border-color: #0d8ecf;
+        background-color: #E67E00;
+        border-color: #E67E00;
     }
     .text-primary {
-        color: #1DA1F2 !important;
+        color: #FF8C00 !important;
+    }
+    .bg-primary {
+        background-color: #FF8C00 !important;
+    }
+    .border-primary {
+        border-color: #FF8C00 !important;
+    }
+    /* Additional orange theme elements */
+    a {
+        color: #FF8C00;
+    }
+    a:hover {
+        color: #E67E00;
+    }
+    .nav-link.active {
+        color: #FF8C00 !important;
+        font-weight: bold;
+    }
+    .form-check-input:checked {
+        background-color: #FF8C00;
+        border-color: #FF8C00;
     }
 </style>
 @endsection

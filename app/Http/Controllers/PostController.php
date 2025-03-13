@@ -31,8 +31,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('update', $post);
-
         $validated = $request->validate([
             'topic' => 'required|max:255',
             'detail' => 'nullable',
@@ -84,6 +82,18 @@ class PostController extends Controller
         $votes = $allVotes->sortByDesc('created_at');
         
         return view('posts.show', compact('post', 'votes'));
+    }
+
+    public function showUserPosts()
+    {
+        $userId = auth()->id();
+        
+        $posts = Post::with(['choices.votes.user', 'user'])
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return view('layouts.profile', compact('posts'));
     }
     /**
      * Show the form for editing the specified resource.

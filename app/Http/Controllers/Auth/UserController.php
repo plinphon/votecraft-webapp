@@ -80,4 +80,17 @@ class UserController extends Controller
         return redirect('/')
             ->with('success', 'You have been logged out successfully.');
     }
+
+    public function update_username(Request $request)
+    {
+        $validated = $request->$request->validate([
+            'username' => 'required|string|max:255',
+        ]);
+        $user = Auth::user();
+        $user->username = $validated['username'];
+        $user->save();    
+
+        return redirect('home')
+            ->with('success', 'Updated username successfully.');
+    }
 }

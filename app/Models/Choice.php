@@ -20,6 +20,7 @@ class Choice extends Model
     protected $fillable = [
         'post_id',
         'detail',
+        'image_path'
     ];
 
     public function post()

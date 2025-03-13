@@ -8,7 +8,7 @@
                 <div class="card-header">Create New Poll</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('posts.store') }}">
+                    <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
 
@@ -45,38 +45,46 @@
                             <div class="form-group mb-3">
                                 <label>Poll Choices</label>
                                 
-                                <div class="choice-group mb-2">
+                                <div class="choice-group mb-3">
                                     <div class="input-group">
                                         <input 
                                             type="text" 
                                             class="form-control" 
-                                            name="choice[]" 
+                                            name="choices[0][detail]" 
                                             placeholder="Enter choice" 
-                                            required
+                                        >
+                                        <input
+                                            type="file"
+                                            class="form-control"
+                                            name="choices[0][image]" 
+                                            accept="image/*"
                                         >
                                         <button 
                                             type="button" 
-                                            class="btn btn-danger remove-choice" 
-                                            style="display:none;"
+                                            class="btn btn-danger remove-choice"
                                         >
                                             Remove
                                         </button>
                                     </div>
                                 </div>
                                 
-                                <div class="choice-group mb-2">
+                                <div class="choice-group mb-3">
                                     <div class="input-group">
                                         <input 
                                             type="text" 
                                             class="form-control" 
-                                            name="choice[]" 
+                                            name="choices[1][detail]" 
                                             placeholder="Enter choice" 
-                                            required
+                                        >
+                                        <input
+                                            type="file"
+                                            class="form-control"
+                                            name="choices[1][image]" 
+                                            accept="image/*"
                                         >
                                         <button 
                                             type="button" 
-                                            class="btn btn-danger remove-choice" 
-                                            style="display:none;"
+                                            class="btn btn-danger remove-choice"
                                         >
                                             Remove
                                         </button>
@@ -99,7 +107,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Create Poll
                             </button>
-                            <a href="{{ route('home') }}" class="btn btn-secondary ml-2">
+                            <a href="{{ route('home') }}" class="btn btn-secondary ms-2">
                                 Cancel
                             </a>
                         </div>
@@ -114,19 +122,25 @@
 document.addEventListener('DOMContentLoaded', function() {
     const choicesContainer = document.querySelector('#choices-container .form-group');
     const addChoiceButton = document.getElementById('add-choice');
+    let choiceIndex = 2; // Start from 2 since we already have choices[0] and choices[1]
 
     // Add choice functionality
     addChoiceButton.addEventListener('click', function() {
         const newChoiceGroup = document.createElement('div');
-        newChoiceGroup.className = 'choice-group mb-2';
+        newChoiceGroup.className = 'choice-group mb-3';
         newChoiceGroup.innerHTML = `
             <div class="input-group">
                 <input 
                     type="text" 
                     class="form-control" 
-                    name="choice[]" 
+                    name="choices[${choiceIndex}][detail]" 
                     placeholder="Enter choice" 
-                    required
+                >
+                <input
+                    type="file"
+                    class="form-control"
+                    name="choices[${choiceIndex}][image]" 
+                    accept="image/*"
                 >
                 <button 
                     type="button" 
@@ -138,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         choicesContainer.appendChild(newChoiceGroup);
+        choiceIndex++;
         updateRemoveButtons();
     });
 
@@ -156,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             removeButton.onclick = function() {
                 group.remove();
                 updateRemoveButtons();
+            
             };
         });
     }

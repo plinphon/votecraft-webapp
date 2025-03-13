@@ -15,6 +15,14 @@
                                     {{ $choice->detail }}
                                 </label>
                             </div>
+                            <div>
+                                @if($choice->image_path)
+                                    <img src="{{ asset('storage/' . $choice->image_path) }}" 
+                                         alt="Choice Image" 
+                                         class="img-thumbnail me-3" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                @endif
+                            </div>
                             <span class="badge bg-secondary">{{ \App\Http\Controllers\VoteController::getPercentage($choice) }}% ({{ \App\Http\Controllers\VoteController::getTotalChoiceVotes($choice) }})</span>
                         </div>
                         <div class="progress mt-1" style="height: 5px;">

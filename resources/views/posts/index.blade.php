@@ -7,7 +7,6 @@
         <div class="col-md-3 d-none d-md-block">
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Navigation</h5>
                     <ul class="nav flex-column">
                         <li class="nav-item"><a href="{{ route('home') }}" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>

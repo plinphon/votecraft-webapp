@@ -35,21 +35,34 @@ class PostController extends Controller
             'topic' => 'required|max:255',
             'detail' => 'nullable',
             'user_id' => 'required|exists:users,id',
-            'choice' => 'required|array|min:2',
-            'choice.*' => 'required|string|max:255',
+            'choices' => 'required|array|min:2',
+            'choices.*.detail' => 'nullable|string|max:255',
+            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $post = Post::create($validated);
+        $post = Post::create([
+            'topic' => $validated['topic'],
+            'detail' => $validated['detail'],
+            'user_id' => $validated['user_id'],
+        ]);
 
-        foreach ($validated['choice'] as $choiceDetail) {
-            Choice::create([
+        foreach ($request->choices as $choiceData) {
+           
+            $choice = new Choice([
                 'post_id' => $post->id,
-                'detail' => $choiceDetail,
+                'detail' => $choiceData['detail'],
             ]);
+            
+            if (isset($choiceData['image']) && $choiceData['image'] instanceof \Illuminate\Http\UploadedFile) {
+                $imagePath = $choiceData['image']->store('choice_images', 'public');
+                $choice->image_path = $imagePath;
+            }
+            
+            $choice->save();
         }
 
         return redirect()->route('home')
-            ->with('success','Poll created successfully.');
+            ->with('success', 'Poll created successfully.');
     }
 
     /**
@@ -91,23 +104,37 @@ class PostController extends Controller
             'topic' => 'required|max:255',
             'detail' => 'nullable',
             'user_id' => 'required|exists:users,id',
-            'choice' => 'required|array|min:2',
-            'choice.*' => 'required|string|max:255',
+            'choices' => 'required|array|min:2',
+            'choices.*.detail' => 'required|string|max:255',
+            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $post->update($validated);
-
+    
+        $post->update([
+            'topic' => $validated['topic'],
+            'detail' => $validated['detail'],
+            'user_id' => $validated['user_id'],
+        ]);
+    
+        // Delete existing choices
         $post->choices()->delete();
-
-        foreach ($validated['choice'] as $choiceDetail) {
-            Choice::create([
+    
+        // Create new choices
+        foreach ($request->choices as $choiceData) {
+            $choice = new Choice([
                 'post_id' => $post->id,
-                'detail' => $choiceDetail,
+                'detail' => $choiceData['detail'],
             ]);
+            
+            if (isset($choiceData['image']) && $choiceData['image'] instanceof \Illuminate\Http\UploadedFile) {
+                $imagePath = $choiceData['image']->store('choice_images', 'public');
+                $choice->image_path = $imagePath;
+            }
+            
+            $choice->save();
         }
-
+    
         return redirect()->route('home')
-            ->with('success', 'Post edit successfully.');
+            ->with('success', 'Post updated successfully.');
     }
 
     /**

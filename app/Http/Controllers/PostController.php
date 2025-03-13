@@ -36,17 +36,16 @@ class PostController extends Controller
             'detail' => 'nullable',
             'choices' => 'required|array|min:2',
             'choices.*.detail' => 'nullable|string|max:255',
-            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
-
+    
         $post = Post::create([
             'topic' => $validated['topic'],
             'detail' => $validated['detail'],
             'user_id' => auth()->user()->id,
         ]);
-
+    
         foreach ($request->choices as $choiceData) {
-           
             $choice = new Choice([
                 'post_id' => $post->id,
                 'detail' => $choiceData['detail'],
@@ -54,12 +53,12 @@ class PostController extends Controller
             
             if (isset($choiceData['image']) && $choiceData['image'] instanceof \Illuminate\Http\UploadedFile) {
                 $imagePath = $choiceData['image']->store('choice_images', 'public');
-                $choice->image_path = $imagePath;
+                $choice->image_path = $imagePath; 
             }
             
             $choice->save();
         }
-
+    
         return redirect()->route('home')
             ->with('success', 'Poll created successfully.');
     }
@@ -117,7 +116,7 @@ class PostController extends Controller
             'detail' => 'nullable',
             'choices' => 'required|array|min:2',
             'choices.*.detail' => 'required|string|max:255',
-            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
     
         $post->update([

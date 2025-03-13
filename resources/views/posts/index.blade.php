@@ -21,7 +21,7 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="m-0">Create a poll</h5>
+                        <h5 class="m-0">Start a Poll – Let Everyone Decide for You!</h5>
                         <a href="{{ route('posts.create') }}" class="btn btn-primary rounded-pill px-4">New Poll</a>
                     </div>
                 </div>

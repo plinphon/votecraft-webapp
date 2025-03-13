@@ -7,7 +7,7 @@
         <div class="vote card mb-3">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">{{ $vote->user->name ?? 'Unknown User' }}</h5>
+                    <h5 class="card-title mb-0">{{ $vote->user->username ?? 'Unknown User' }}</h5>
                     <small class="text-muted">{{ $vote->created_at->diffForHumans() }}</small>
                 </div>
                 <p class="card-text mt-2">

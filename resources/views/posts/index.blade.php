@@ -22,8 +22,8 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="m-0">Create a post</h5>
-                        <a href="{{ route('posts.create') }}" class="btn btn-primary rounded-pill px-4">New Post</a>
+                        <h5 class="m-0">Create a poll</h5>
+                        <a href="{{ route('posts.create') }}" class="btn btn-primary rounded-pill px-4">New Poll</a>
                     </div>
                 </div>
             </div>
@@ -43,8 +43,8 @@
                                 {{ substr($post->user_id, 0, 1) }}
                             </div>
                             <div class="ms-3">
-                                <h6 class="m-0 fw-bold">User #{{ $post->user_id }}</h6>
-                                <small class="text-muted">{{ $post->created_at->format('M d, Y') }} · Post #{{ $post->id }}</small>
+                                <h6 class="m-0 fw-bold">{{ $post->user->username }}</h6>
+                                <small class="text-muted">{{ $post->created_at->format('M d, Y') }}</small>
                             </div>
                         </div>
                     </div>
@@ -61,16 +61,19 @@
                             <a href="{{ route('posts.show', $post) }}" class="btn btn-link text-decoration-none text-secondary">
                                 <i class="bi bi-chat-dots"></i> Comments
                             </a>
-                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-link text-decoration-none text-secondary">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                            <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-link text-decoration-none text-secondary" onclick="return confirm('Are you sure?')">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </form>
+                            
+                            @if(Auth::check() && Auth::id() == $post->user_id)
+                                <a href="{{ route('posts.edit', $post) }}" class="btn btn-link text-decoration-none text-secondary">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-link text-decoration-none text-secondary" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -77,6 +77,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::with(['choices', 'user'])->findOrFail($id);
+        $this->authorize('update', $post);
+
         return view('posts.edit', compact('post'));
     }
 
@@ -113,6 +115,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     { 
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         return redirect()->route('home')

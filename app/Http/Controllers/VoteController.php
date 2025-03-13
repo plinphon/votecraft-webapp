@@ -6,24 +6,29 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Choice;
 use App\Models\Vote;
+use Illuminate\Validation\Rule;
 
 class VoteController extends Controller
 {
 
-    public function store(Request $request) 
+    public function store(Request $request, Post $post) 
     {
+        $this->authorize('vote', $post); 
+    
         $validated = $request->validate([
-
-            'choice_id' => 'required|exists:choices,id',
+            'choice_id' => [
+                'required',
+                Rule::exists('choices', 'id')->where('post_id', $post->id)
+            ],
             'comment' => 'nullable'
         ]);
-
+    
         Vote::create([
-            'choice_id' => $validated['choice_id'], 
-            'comment' => $validated['comment'] ?? null,
-            'user_id' => auth()->user()->id, 
+            'user_id' => auth()->id(),
+            'choice_id' => $validated['choice_id'],
+            'comment' => $validated['comment'] ?? null
         ]);
-
+    
         return redirect()->route('home')
             ->with('success','Voted successfully.');
     }
@@ -39,7 +44,7 @@ class VoteController extends Controller
     }
 
     public static function getPercentage(Choice $choice)
-    {
+    { 
         $totalVotes = self::getTotalVotes($choice);
     
         if ($totalVotes === 0) {

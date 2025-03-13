@@ -1,6 +1,6 @@
 <div class="vote-box card mt-3">
     <div class="card-body">
-        <form method="POST" action="{{ route('votes.store') }}">
+        <form action="{{ route('votes.store', $post) }}" method="POST">
             @csrf
             
             <div class="form-group mb-3">

@@ -2,7 +2,6 @@
     <div class="card-body">
         <form method="POST" action="{{ route('votes.store') }}">
             @csrf
-            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
             
             <div class="form-group mb-3">
                 <label>Choose an option:</label>

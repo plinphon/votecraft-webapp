@@ -10,7 +10,6 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
 
                         <div class="form-group mb-3">
                             <label for="topic">Poll Topic</label>

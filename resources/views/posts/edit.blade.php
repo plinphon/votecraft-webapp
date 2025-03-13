@@ -11,7 +11,6 @@
                     <form method="POST" action="{{ route('posts.update', $post) }}">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="user_id" value="{{ $post->user_id }}">
 
                         <div class="form-group mb-3">
                             <label for="topic">Poll Topic</label>

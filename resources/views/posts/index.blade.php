@@ -61,7 +61,7 @@
                                 <i class="bi bi-chat-dots"></i> Comments
                             </a>
                             
-                            @if(Auth::check() && Auth::id() == $post->user_id)
+                            @can('update', $post)
                                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-link text-decoration-none text-secondary">
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
@@ -72,7 +72,7 @@
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
-                            @endif
+                            @endcan
                         </div>
                     </div>
                 </div>

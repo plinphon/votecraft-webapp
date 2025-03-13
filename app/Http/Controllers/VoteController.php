@@ -13,12 +13,16 @@ class VoteController extends Controller
     public function store(Request $request) 
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+
             'choice_id' => 'required|exists:choices,id',
             'comment' => 'nullable'
         ]);
 
-        Vote::create($validated);
+        Vote::create([
+            'choice_id' => $validated['choice_id'], 
+            'comment' => $validated['comment'] ?? null,
+            'user_id' => auth()->user()->id, 
+        ]);
 
         return redirect()->route('home')
             ->with('success','Voted successfully.');

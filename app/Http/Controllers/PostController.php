@@ -34,7 +34,6 @@ class PostController extends Controller
         $validated = $request->validate([
             'topic' => 'required|max:255',
             'detail' => 'nullable',
-            'user_id' => 'required|exists:users,id',
             'choices' => 'required|array|min:2',
             'choices.*.detail' => 'nullable|string|max:255',
             'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -43,7 +42,7 @@ class PostController extends Controller
         $post = Post::create([
             'topic' => $validated['topic'],
             'detail' => $validated['detail'],
-            'user_id' => $validated['user_id'],
+            'user_id' => auth()->user()->id,
         ]);
 
         foreach ($request->choices as $choiceData) {
@@ -103,7 +102,6 @@ class PostController extends Controller
         $validated = $request->validate([
             'topic' => 'required|max:255',
             'detail' => 'nullable',
-            'user_id' => 'required|exists:users,id',
             'choices' => 'required|array|min:2',
             'choices.*.detail' => 'required|string|max:255',
             'choices.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -112,7 +110,7 @@ class PostController extends Controller
         $post->update([
             'topic' => $validated['topic'],
             'detail' => $validated['detail'],
-            'user_id' => $validated['user_id'],
+            'user_id' => auth()->user()->id,
         ]);
     
         // Delete existing choices

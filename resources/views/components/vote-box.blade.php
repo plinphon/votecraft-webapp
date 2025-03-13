@@ -1,9 +1,9 @@
 <div class="vote-box card mt-3">
     <div class="card-body">
         @can('vote', $post)
-            {{-- Voting Form --}}
             <form action="{{ route('votes.store', $post) }}" method="POST">
                 @csrf
+                
                 <div class="form-group mb-3">
                     <label class="fw-bold mb-2">Choose an option:</label>
                     @foreach($post->choices as $choice)
@@ -16,8 +16,7 @@
                                                    name="choice_id" 
                                                    value="{{ $choice->id }}" 
                                                    id="choice_{{ $choice->id }}"
-                                                   required
-                                                   @if($userChoice && $userChoice->id === $choice->id) checked @endif>
+                                                   required>
                                             <label class="form-check-label" for="choice_{{ $choice->id }}">
                                                 {{ $choice->detail }}
                                             </label>
@@ -31,6 +30,7 @@
                                              style="max-width: 150px; max-height: 150px; object-fit: cover;">
                                     @endif
                                 </div>
+                                
                             </div>
                         </div>
                     @endforeach
@@ -57,16 +57,12 @@
                     </button>
                 </div>
             </form>
-        @else
-            {{-- Results Display --}}
+            @else
             <div class="voting-results">
                 <div class="mb-3">
                     <label class="fw-bold mb-2 text-muted">Poll Results:</label>
                     @foreach($post->choices as $choice)
-                        @php
-                            $userVoted = auth()->check() && $choice->votes->contains('user_id', auth()->id());
-                        @endphp
-                        <div class="choice-item card mb-2 {{ $userVoted ? 'border-warning border-2' : 'bg-light' }}">
+                        <div class="choice-item card mb-2 bg-light">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="flex-grow-1 me-3">
@@ -74,20 +70,18 @@
                                             <span class="text-muted me-2">
                                                 @if($post->user_id === auth()->id())
                                                     <i class="bi bi-lock-fill"></i>
-                                                @elseif($userVoted)
-                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                @else
+                                                    <i class="bi bi-check2"></i>
                                                 @endif
                                             </span>
-                                            <span class="fw-medium {{ $userVoted ? 'text-warning' : '' }}">
-                                                {{ $choice->detail }}
-                                            </span>
+                                            <span class="fw-medium">{{ $choice->detail }}</span>
                                         </div>
                                     </div>
                                     
                                     @if($choice->image_path)
                                         <img src="{{ asset('storage/' . $choice->image_path) }}" 
                                              alt="Choice Image" 
-                                             class="img-thumbnail ms-3 {{ $userVoted ? '' : 'opacity-75' }}" 
+                                             class="img-thumbnail ms-3 opacity-75" 
                                              style="max-width: 150px; max-height: 150px; object-fit: cover;">
                                     @endif
                                 </div>
@@ -98,7 +92,7 @@
                                         <span>{{ \App\Http\Controllers\VoteController::getTotalChoiceVotes($choice) }} votes</span>
                                     </div>
                                     <div class="progress" style="height: 8px;">
-                                        <div class="progress-bar bg-warning" 
+                                        <div class="progress-bar bg-secondary" 
                                              role="progressbar" 
                                              style="width: {{ \App\Http\Controllers\VoteController::getPercentage($choice) }}%" 
                                              aria-valuenow="{{ \App\Http\Controllers\VoteController::getPercentage($choice) }}" 
@@ -119,17 +113,13 @@
                     <div class="text-muted">
                         @auth
                             @if($post->user_id === auth()->id())
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-person-lock me-1"></i>Your poll
-                                </span>
+                                <i class="bi bi-info-circle me-1"></i>Your poll
                             @else
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-check-circle me-1"></i>Your vote recorded
-                                </span>
+                                <i class="bi bi-check2-circle me-1"></i>Vote recorded
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-sm btn-warning">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Login to vote
+                            <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Login to vote
                             </a>
                         @endauth
                     </div>

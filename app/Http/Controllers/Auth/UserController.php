@@ -27,7 +27,7 @@ class UserController extends Controller
         
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard')
+            return redirect('/')
                 ->with('success', 'You have been logged in successfully.');
         }
         
@@ -63,7 +63,7 @@ class UserController extends Controller
         
         Auth::login($user);
         
-        return redirect('home')
+        return redirect('/')
             ->with('success', 'Account created successfully.');
     }
     

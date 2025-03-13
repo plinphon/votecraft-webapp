@@ -31,6 +31,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('update', $post);
+
         $validated = $request->validate([
             'topic' => 'required|max:255',
             'detail' => 'nullable',
@@ -89,7 +91,6 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::with(['choices', 'user'])->findOrFail($id);
-        $this->authorize('update', $post);
 
         return view('posts.edit', compact('post'));
     }
@@ -99,6 +100,8 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $this->authorize('update', $post);
+
         $validated = $request->validate([
             'topic' => 'required|max:255',
             'detail' => 'nullable',
